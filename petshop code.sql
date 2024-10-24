@@ -1,3 +1,5 @@
+set foreign_key_checks=1;
+
 create schema petshop
 character set utf8mb4
 collate utf8mb4_unicode_ci;
@@ -144,3 +146,32 @@ INSERT INTO Vendas (data_vendas, total, id_cliente, id_funcionario) VALUES
 ('2024-03-25', 200.00, 6, 6);
 
 select * from itens_vendas;
+
+
+ALTER TABLE Vendas
+ADD COLUMN id_cliente INT, 
+ADD COLUMN id_funcionario INT, 
+ADD INDEX idx_id_cliente (id_cliente),
+ADD INDEX idx_id_funcionario (id_funcionario), 
+ADD CONSTRAINT fk_vendas_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+ADD CONSTRAINT fk_vendas_funcionario FOREIGN KEY (id_funcionario) REFERENCES Funcionarios(id_funcionario);
+
+ALTER TABLE Agendamentos
+ADD COLUMN id_cliente INT,
+ADD COLUMN id_servico INT,
+ADD COLUMN id_funcionario INT,
+ADD INDEX idx_id_cliente_agendamento (id_cliente), 
+ADD INDEX idx_id_servico (id_servico), 
+ADD INDEX idx_id_funcionario_agendamento (id_funcionario),
+ADD CONSTRAINT fk_agendamento_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+ADD CONSTRAINT fk_agendamento_servico FOREIGN KEY (id_servico) REFERENCES Servicos(id_servico),
+ADD CONSTRAINT fk_agendamento_funcionario FOREIGN KEY (id_funcionario) REFERENCES Funcionarios(id_funcionario);
+
+alter table estoque
+add index idx_nome_produto(nome_produto);
+
+alter table clientes
+add index idx_nome_cliente(nome_cliente);
+
+alter table servicos
+add index idx_nome_servico(nome_servfico);
